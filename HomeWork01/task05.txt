@@ -1,1 +1,36 @@
+ЗАДАНИЕ №5
+При помощи HEREDOC записать в файл многостраничное сообщение
 
+[root@mmmde01 ~]# cat <<END > output.txt
+> line 01
+> line 02
+> line 03
+> line 04
+> line 05
+>
+> END
+[root@mmmde01 ~]# ls -all
+total 32
+dr-xr-x---.  6 root root 216 Nov 12 16:04 .
+dr-xr-xr-x. 17 root root 224 Sep 21  2022 ..
+-rw-------.  1 root root 275 Nov 11 18:48 .bash_history
+-rw-r--r--.  1 root root  18 Mar  7  2019 .bash_logout
+-rw-r--r--.  1 root root 176 Mar  7  2019 .bash_profile
+-rw-r--r--.  1 root root 176 Mar  7  2019 .bashrc
+drwx------.  3 root root  16 Nov 11 17:17 .cache
+drwx------.  3 root root  16 Nov 11 17:17 .config
+-rw-r--r--.  1 root root 100 Mar  7  2019 .cshrc
+drwx------.  3 root root  19 Nov 11 17:17 .local
+prw-r--r--.  1 root root   0 Nov 12 16:05 my_pipe
+-rw-r--r--.  1 root root  41 Nov 12 16:46 output.txt
+drwx------.  2 root root  29 Nov  9 15:21 .ssh
+-rw-r--r--.  1 root root 129 Mar  7  2019 .tcshrc
+-rw-------.  1 root root 532 Sep 21  2022 .viminfo
+[root@mmmde01 ~]# cat output.txt
+line 01
+line 02
+line 03
+line 04
+line 05
+
+[root@mmmde01 ~]#
