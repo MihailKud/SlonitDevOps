@@ -1,1 +1,29 @@
+ЗАДАНИЕ №3
+При помощи именованного пайпа заархивировать все, что в него отправляем.
+На выходе получить архив в любом распространенном формате.
+
+Архивы создавал во временной новой директории.
+
+[root@mmmde01 ~]# clear
+[root@mmmde01 ~]# pwd
+/root
+[root@mmmde01 ~]# mkdir dirtemp
+[root@mmmde01 ~]# cd dirtemp
+[root@mmmde01 dirtemp]# mkfifo my_archiv_pipe
+[root@mmmde01 dirtemp]# ls -all
+total 0
+drwxr-xr-x. 2 root root  28 Nov 12 16:52 .
+dr-xr-x---. 7 root root 231 Nov 12 16:50 ..
+prw-r--r--. 1 root root   0 Nov 12 16:52 my_archiv_pipe
+[root@mmmde01 dirtemp]# tar --create --file arhive.tar -C /var/log messages < my_archiv_pipe &
+[1] 1777
+[root@mmmde01 dirtemp]# cat /var/log/messages > my_archiv_pipe
+[1]+  Done                    tar --create --file arhive.tar -C /var/log messages < my_archiv_pipe
+[root@mmmde01 dirtemp]# ls -all
+total 260
+drwxr-xr-x. 2 root root     46 Nov 12 17:08 .
+dr-xr-x---. 7 root root    231 Nov 12 16:50 ..
+-rw-r--r--. 1 root root 266240 Nov 12 17:08 arhive.tar
+prw-r--r--. 1 root root      0 Nov 12 17:08 my_archiv_pipe
+[root@mmmde01 dirtemp]#
 
