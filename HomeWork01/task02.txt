@@ -1,1 +1,57 @@
+ЗАДАНИЕ №2
+Создать именованный пайп. Вывести в файл через созданный пайп вывод команды ss -plnt.
 
+Создал пайп my_pipe. 
+Проверил его существование.
+Далее в файл output.txt занес вывод команды ss -plnt.
+Содержимое файла вывел на консоль с помощью команды cat.
+Ниже даю копию содержимого консоли на всех этапах.
+
+
+Last login: Mon Nov 11 18:30:28 2024 from 5.144.119.219
+[root@mmmde01 ~]# ls -all
+total 28
+dr-xr-x---.  6 root root 183 Nov 11 17:17 .
+dr-xr-xr-x. 17 root root 224 Sep 21  2022 ..
+-rw-------.  1 root root 275 Nov 11 18:48 .bash_history
+-rw-r--r--.  1 root root  18 Mar  7  2019 .bash_logout
+-rw-r--r--.  1 root root 176 Mar  7  2019 .bash_profile
+-rw-r--r--.  1 root root 176 Mar  7  2019 .bashrc
+drwx------.  3 root root  16 Nov 11 17:17 .cache
+drwx------.  3 root root  16 Nov 11 17:17 .config
+-rw-r--r--.  1 root root 100 Mar  7  2019 .cshrc
+drwx------.  3 root root  19 Nov 11 17:17 .local
+drwx------.  2 root root  29 Nov  9 15:21 .ssh
+-rw-r--r--.  1 root root 129 Mar  7  2019 .tcshrc
+-rw-------.  1 root root 532 Sep 21  2022 .viminfo
+[root@mmmde01 ~]# mkfifo my_pipe
+[root@mmmde01 ~]# ls -all
+total 28
+dr-xr-x---.  6 root root 198 Nov 12 16:03 .
+dr-xr-xr-x. 17 root root 224 Sep 21  2022 ..
+-rw-------.  1 root root 275 Nov 11 18:48 .bash_history
+-rw-r--r--.  1 root root  18 Mar  7  2019 .bash_logout
+-rw-r--r--.  1 root root 176 Mar  7  2019 .bash_profile
+-rw-r--r--.  1 root root 176 Mar  7  2019 .bashrc
+drwx------.  3 root root  16 Nov 11 17:17 .cache
+drwx------.  3 root root  16 Nov 11 17:17 .config
+-rw-r--r--.  1 root root 100 Mar  7  2019 .cshrc
+drwx------.  3 root root  19 Nov 11 17:17 .local
+prw-r--r--.  1 root root   0 Nov 12 16:03 my_pipe
+drwx------.  2 root root  29 Nov  9 15:21 .ssh
+-rw-r--r--.  1 root root 129 Mar  7  2019 .tcshrc
+-rw-------.  1 root root 532 Sep 21  2022 .viminfo
+[root@mmmde01 ~]# ss -plnt > my_pipe
+
+^C
+[root@mmmde01 ~]# cat my_pipe > output.txt
+^C
+[root@mmmde01 ~]# cat output.txt
+[root@mmmde01 ~]# ss -plnt > my_pipe &
+[1] 1177
+[root@mmmde01 ~]# cat my_pipe > output.txt
+[1]+  Done                    ss -plnt > my_pipe
+[root@mmmde01 ~]# cat output.txt
+State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+LISTEN 0      128          0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=1038,fd=5))
+[root@mmmde01 ~]#
