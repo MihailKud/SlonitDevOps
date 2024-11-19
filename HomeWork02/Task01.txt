@@ -1,1 +1,44 @@
+ЗАДАНИЕ №1
+Отразить 7 последних строк из: wtmp last
 
+Файл wtmp - это двоичный файл. Его чтение осуществляется командой last.
+
+[root@mmmde01 ~]# last
+root     pts/0        5.144.123.60     Tue Nov 19 16:09   still logged in
+reboot   system boot  5.4.17-2136.310. Tue Nov 19 15:53   still running
+root     pts/0        5.144.121.9      Tue Nov 12 16:02 - 17:17  (01:15)
+reboot   system boot  5.4.17-2136.310. Tue Nov 12 15:45 - 17:18  (01:32)
+root     pts/1        5.144.119.219    Mon Nov 11 18:30 - 18:48  (00:17)
+root     tty1                          Mon Nov 11 17:11 - 17:17  (00:06)
+root     pts/0        5.144.119.219    Mon Nov 11 17:07 - 18:48  (01:41)
+reboot   system boot  5.4.17-2136.310. Mon Nov 11 16:58 - 18:48  (01:49)
+root     pts/0        5.144.120.77     Sat Nov  9 15:32 - 15:37  (00:05)
+root     pts/0        5.144.120.77     Sat Nov  9 15:27 - 15:28  (00:00)
+root     pts/0        5.144.120.77     Sat Nov  9 15:23 - 15:25  (00:01)
+reboot   system boot  5.4.17-2136.310. Sat Nov  9 15:20 - 15:38  (00:17)
+
+wtmp begins Wed Sep 21 08:11:39 2022
+
+Для отражения на консоли семи последних строк из файла использую конвейер.
+
+[root@mmmde01 ~]# last | tail -n 7
+reboot   system boot  5.4.17-2136.310. Mon Nov 11 16:58 - 18:48  (01:49)
+root     pts/0        5.144.120.77     Sat Nov  9 15:32 - 15:37  (00:05)
+root     pts/0        5.144.120.77     Sat Nov  9 15:27 - 15:28  (00:00)
+root     pts/0        5.144.120.77     Sat Nov  9 15:23 - 15:25  (00:01)
+reboot   system boot  5.4.17-2136.310. Sat Nov  9 15:20 - 15:38  (00:17)
+
+wtmp begins Wed Sep 21 08:11:39 2022
+
+Вместе с тем, в случае если необходимо смотреть последние строки файла исходя из критерия времени,
+в которое они записывались, то фактически необходимо отразить первые 7 строк.
+
+[root@mmmde01 ~]# last | head -n 7
+root     pts/0        5.144.123.60     Tue Nov 19 16:09   still logged in
+reboot   system boot  5.4.17-2136.310. Tue Nov 19 15:53   still running
+root     pts/0        5.144.121.9      Tue Nov 12 16:02 - 17:17  (01:15)
+reboot   system boot  5.4.17-2136.310. Tue Nov 12 15:45 - 17:18  (01:32)
+root     pts/1        5.144.119.219    Mon Nov 11 18:30 - 18:48  (00:17)
+root     tty1                          Mon Nov 11 17:11 - 17:17  (00:06)
+root     pts/0        5.144.119.219    Mon Nov 11 17:07 - 18:48  (01:41)
+[root@mmmde01 ~]#
