@@ -1,1 +1,65 @@
+ЗАДАНИЕ №6
+Вывести сообщения с последнего запуска системы.
+
+Используем команду journalctl.
+
+[root@mmmde01 ~]# journalctl -b
+-- Logs begin at Tue 2024-11-19 15:53:16 UTC, end at Tue 2024-11-19 16:36:01 UTC. --
+Nov 19 15:53:16 localhost.localdomain kernel: Linux version 5.4.17-2136.310.7.1.el8uek.x86_64 (mockbuild@host-100-100-2>
+Nov 19 15:53:16 localhost.localdomain kernel: Command line: BOOT_IMAGE=(hd0,gpt2)/boot/vmlinuz-5.4.17-2136.310.7.1.el8u>
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point registers'
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: Supporting XSAVE feature 0x002: 'SSE registers'
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: Supporting XSAVE feature 0x004: 'AVX registers'
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: Supporting XSAVE feature 0x020: 'AVX-512 opmask'
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: Supporting XSAVE feature 0x040: 'AVX-512 Hi256'
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: Supporting XSAVE feature 0x080: 'AVX-512 ZMM_Hi256'
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: xstate_offset[2]:  576, xstate_sizes[2]:  256
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: xstate_offset[5]: 1088, xstate_sizes[5]:   64
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: xstate_offset[6]: 1152, xstate_sizes[6]:  512
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: xstate_offset[7]: 1664, xstate_sizes[7]: 1024
+Nov 19 15:53:16 localhost.localdomain kernel: x86/fpu: Enabled xstate features 0xe7, context size is 2688 bytes, using >
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-provided physical RAM map:
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x0000000000100000-0x0000000058f4ffff] usable
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x0000000058f50000-0x000000005c8bbfff] reserved
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000005c8bc000-0x000000007c739fff] usable
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007c73a000-0x000000007e521fff] reserved
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007e522000-0x000000007e9a0fff] usable
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007e9a1000-0x000000007e9a2fff] reserved
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007e9a3000-0x000000007ea73fff] usable
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007ea74000-0x000000007ea75fff] reserved
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007ea76000-0x000000007ea8efff] usable
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007ea8f000-0x000000007ea90fff] ACPI data
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007ea91000-0x000000007eb1afff] reserved
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007eb1b000-0x000000007fb9afff] usable
+Nov 19 15:53:16 localhost.localdomain kernel: BIOS-e820: [mem 0x000000007fb9b000-0x000000007fbf2fff] reserved
+lines 1-29
+
+Объем вывода значительный. Видим 1000 записей. Поэтому весь вывод здесь не привожу.
+[root@mmmde01 ~]# journalctl -b | wc -l
+1000
+
+При таких объемах информации для упрощения дальнейшей обработки и анализа вывод можно сделать в текстовый файл.
+[root@mmmde01 ~]# journalctl -b > data_journalctl.txt
+[root@mmmde01 ~]# ls -all
+total 132
+dr-xr-x---.  7 root root   258 Nov 19 16:44 .
+dr-xr-xr-x. 17 root root   224 Sep 21  2022 ..
+-rw-------.  1 root root  1379 Nov 12 17:17 .bash_history
+-rw-r--r--.  1 root root    18 Mar  7  2019 .bash_logout
+-rw-r--r--.  1 root root   176 Mar  7  2019 .bash_profile
+-rw-r--r--.  1 root root   176 Mar  7  2019 .bashrc
+drwx------.  3 root root    16 Nov 11 17:17 .cache
+drwx------.  3 root root    16 Nov 11 17:17 .config
+-rw-r--r--.  1 root root   100 Mar  7  2019 .cshrc
+-rw-r--r--.  1 root root 98560 Nov 19 16:44 data_journalctl.txt
+drwxr-xr-x.  2 root root    46 Nov 12 17:08 dirtemp
+drwx------.  3 root root    19 Nov 11 17:17 .local
+prw-r--r--.  1 root root     0 Nov 12 16:05 my_pipe
+-rw-r--r--.  1 root root    41 Nov 12 16:46 output.txt
+drwx------.  2 root root    29 Nov  9 15:21 .ssh
+-rw-r--r--.  1 root root   129 Mar  7  2019 .tcshrc
+-rw-------.  1 root root   532 Sep 21  2022 .viminfo
+[root@mmmde01 ~]#
+
 
