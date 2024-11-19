@@ -1,1 +1,15 @@
+Задание №2
+При помощи logger записать в общий журнал послание (сообщение) с facility kernel.
+
+Общим журналом в системе журналирования (логирования) в Linux является файл /var/log/messages (либо syslog).
+При ознакомлении с литературой по этому вопросу был сделан вывод, что при использовании команды
+logger запись с категорией kernel (kern) будет сделана не в файл kern.log, а по-прежнему в общий журнал.
+Для выполнения задания использовал команду logger с параметром "p".
+
+[root@mmmde01 log]# logger -p kern.info Послание добра и мира посланникам из Альфа-Центавра
+[root@mmmde01 log]# cat messages
+Nov 19 16:46:01 mmmde01 rsyslogd[1033]: [origin software="rsyslogd" swVersion="8.2102.0-7.el8_6.1" x-pid="1033" x-info="https://www.rsyslog.com"] rsyslogd was HUPed
+Nov 19 17:21:36 mmmde01 root[1519]: Hello!
+Nov 19 17:22:37 mmmde01 root[1531]: Hello!
+Nov 19 17:26:16 mmmde01 root[1575]: Послание добра и мира посланникам из Альфа-Центавра
 
