@@ -59,7 +59,7 @@ mail.none;authpriv.none;cron.none                /var/log/messages
 *.info                                           /var/log/my.log
 ...
 
-После перезапуска системы логирования каталог /var/log имеет наш файл my.log
+После перезапуска системы логирования каталог /var/log имеет наш файл my.log (я перезагрузил сервер)
 [root@mmmde01 ~]# cd /var/log
 [root@mmmde01 log]# ls -all
 total 2004
