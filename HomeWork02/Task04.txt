@@ -1,1 +1,93 @@
+ЗАДАНИЕ №4
+Создать конфигурацию syslog для отправки сообщений уровня info 
+в файл /var/log/my.log
 
+Для решения такой задачи необходимо откорректировать раздел RULES 
+конфигурационного файла rsyslog.conf, находящегося в каталоге /etc.
+
+Первоначально каталог /var/log выглядит следующим образом (как видим файл my.log отсутствует):
+[root@mmmde01 etc]# cd /var/log
+[root@mmmde01 log]# ls -all
+total 1584
+drwxr-xr-x. 10 root   root     4096 Nov 19 16:36 .
+drwxr-xr-x. 21 root   root     4096 Sep 21  2022 ..
+drwxr-xr-x.  2 root   root       20 Sep 21  2022 anaconda
+drwx------.  2 root   root       23 Nov  9 15:20 audit
+-rw-------.  1 root   root    13491 Nov 20 16:57 boot.log
+-rw-------.  1 root   root    43895 Nov 12 16:11 boot.log-20241112
+-rw-------.  1 root   root    13476 Nov 19 16:36 boot.log-20241119
+-rw-rw----.  1 root   utmp   288384 Nov 20 17:22 btmp
+drwxr-x---.  2 chrony chrony      6 Oct 13  2021 chrony
+-rw-r--r--.  1 root   root   443366 Nov 20 16:57 cloud-init.log
+-rw-r-----.  1 root   adm      9854 Nov 20 16:57 cloud-init-output.log
+-rw-------.  1 root   root     1738 Nov 20 17:01 cron
+-rw-------.  1 root   root     4372 Nov 19 16:01 cron-20241119
+-rw-r--r--.  1 root   root    17562 Nov 19 17:52 dnf.librepo.log
+-rw-r--r--.  1 root   root    31027 Nov 19 17:52 dnf.log
+-rw-r--r--.  1 root   root     3746 Nov 19 17:52 dnf.rpm.log
+-rw-r--r--.  1 root   root        0 Nov 19 16:36 hawkey.log
+-rw-r--r--.  1 root   root      360 Nov 19 16:17 hawkey.log-20241119
+-rw-rw-r--.  1 root   utmp      292 Nov 20 17:19 lastlog
+-rw-------.  1 root   root        0 Nov 19 16:36 maillog
+-rw-------.  1 root   root        0 Sep 21  2022 maillog-20241119
+-rw-------.  1 root   root    81871 Nov 20 17:19 messages
+-rw-------.  1 root   root   341677 Nov 19 16:19 messages-20241119
+drwx------.  2 root   root        6 Sep 21  2022 private
+drwxr-xr-x.  2 root   root        6 Sep 14  2022 qemu-ga
+drwx------.  3 root   root       17 Aug 30  2022 samba
+-rw-------.  1 root   root   112466 Nov 20 17:22 secure
+-rw-------.  1 root   root   142216 Nov 19 16:09 secure-20241119
+-rw-------.  1 root   root        0 Nov 19 16:36 spooler
+-rw-------.  1 root   root        0 Sep 21  2022 spooler-20241119
+drwxr-x---.  2 sssd   sssd      167 Nov 19 16:36 sssd
+drwxr-xr-x.  2 root   root       23 Nov  9 15:21 tuned
+-rw-rw-r--.  1 root   utmp    24576 Nov 20 17:19 wtmp
+
+В интересующей нас части конфигурационный файл rsyslog.conf выглядит следующим образом:
+#### RULES ####
+...
+# Log anything (except mail) of level info or higher.
+# Don't log private authentication messages!
+*.info;mail.none;authpriv.none;cron.none                /var/log/messages
+...
+
+Меняем представленный код на следующий:
+...
+# Log anything (except mail) of level info or higher.
+# Don't log private authentication messages!
+mail.none;authpriv.none;cron.none                /var/log/messages
+*.info                                           /var/log/my.log
+...
+
+После перезапуска системы логирования каталог /var/log имеет наш файл my.log
+[root@mmmde01 ~]# cd /var/log
+[root@mmmde01 log]# ls -all
+total 2004
+drwxr-xr-x. 10 root   root     4096 Nov 20 17:37 .
+drwxr-xr-x. 21 root   root     4096 Sep 21  2022 ..
+drwxr-xr-x.  2 root   root       20 Sep 21  2022 anaconda
+...
+-rw-------.  1 root   root    81161 Nov 20 17:38 my.log
+...
+
+Более того, мы его можем смотреть (объем вывода большой, привожу частично)
+[root@mmmde01 log]# cat my.log
+Nov 20 17:37:14 mmmde01 kernel: Command line: BOOT_IMAGE=(hd0,gpt2)/boot/vmlinuz-5.4.17-2136.310.7.1.el8uek.x86_64 root=UUID=a8d18b4e-1ac0-45e3-ba22-6e3a05840f20 ro console=tty0 console=ttyS0,115200n8 rootflags=discard ipv6.disable=1
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: Supporting XSAVE feature 0x001: 'x87 floating point registers'
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: Supporting XSAVE feature 0x002: 'SSE registers'
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: Supporting XSAVE feature 0x004: 'AVX registers'
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: Supporting XSAVE feature 0x020: 'AVX-512 opmask'
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: Supporting XSAVE feature 0x040: 'AVX-512 Hi256'
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: Supporting XSAVE feature 0x080: 'AVX-512 ZMM_Hi256'
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: xstate_offset[2]:  576, xstate_sizes[2]:  256
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: xstate_offset[5]: 1088, xstate_sizes[5]:   64
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: xstate_offset[6]: 1152, xstate_sizes[6]:  512
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: xstate_offset[7]: 1664, xstate_sizes[7]: 1024
+Nov 20 17:37:14 mmmde01 kernel: x86/fpu: Enabled xstate features 0xe7, context size is 2688 bytes, using 'standard' format.
+Nov 20 17:37:14 mmmde01 kernel: BIOS-provided physical RAM map:
+Nov 20 17:37:14 mmmde01 kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000009ffff] usable
+Nov 20 17:37:14 mmmde01 kernel: BIOS-e820: [mem 0x0000000000100000-0x0000000058f4ffff] usable
+Nov 20 17:37:14 mmmde01 kernel: BIOS-e820: [mem 0x0000000058f50000-0x000000005c8bbfff] reserved
+Nov 20 17:37:14 mmmde01 kernel: BIOS-e820: [mem 0x000000005c8bc000-0x000000007c739fff] usable
+Nov 20 17:37:14 mmmde01 kernel: BIOS-e820: [mem 0x000000007c73a000-0x000000007e521fff] reserved
+...
