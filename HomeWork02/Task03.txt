@@ -1,1 +1,13 @@
+ЗАДАНИЕ №3
+Посмотреть последние 25 строк лога сервиса systemd-logind.
 
+Используем команду journalctl с соответствующими параметрами и конвейером (в моем конкретном случае записей оказалось немного).
+
+[root@mmmde01 ~]# journalctl -u systemd-logind | tail -n 25
+-- Logs begin at Wed 2024-11-20 17:37:14 UTC, end at Wed 2024-11-20 17:52:56 UTC. --
+Nov 20 17:37:19 mmmde01.local systemd[1]: Starting Login Service...
+Nov 20 17:37:19 mmmde01.local systemd-logind[624]: New seat seat0.
+Nov 20 17:37:19 mmmde01.local systemd-logind[624]: Watching system buttons on /dev/input/event0 (Power Button)
+Nov 20 17:37:19 mmmde01.local systemd-logind[624]: Watching system buttons on /dev/input/event1 (AT Translated Set 2 keyboard)
+Nov 20 17:37:19 mmmde01.local systemd[1]: Started Login Service.
+Nov 20 17:38:03 mmmde01.local systemd-logind[624]: New session 1 of user root.
