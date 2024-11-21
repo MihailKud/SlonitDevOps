@@ -57,31 +57,30 @@ Nov 21 16:46:49 mmmde01 sshd[1227]: pam_unix(sshd:session): session opened for u
 
 
 ВТОРУЮ ЧАСТЬ задания (осуществить по заданным критериям ротацию логов) выполнил следующим образом.
+В каталоге /etc/logrotate.d в файл syslog внес дополнительный код следующего содержания.
 
+[root@mmmde01 logrotate.d]# cat syslog
+... 
+/var/log/my_ssh_log.log
+{
+    daily
+    rotate 10
+    size 1M
+}
+...
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Далее проверил, что сообщения (логи) из моего отдельного файла готовы к ротации.
+[root@mmmde01 logrotate.d]# logrotate -d /etc/logrotate.d/syslog
+WARNING: logrotate in debug mode does nothing except printing debug messages!  Consider using verbose mode (-v) instead if this is not what you want.
+...
+rotating pattern: /var/log/my_ssh_log.log
+ 1048576 bytes (10 rotations)
+empty log files are rotated, old logs are removed
+considering log /var/log/my_ssh_log.log
+Creating new state
+  Now: 2024-11-21 17:14
+  Last rotated at 2024-11-21 17:00
+  log does not need rotating (log size is below the 'size' threshold)
+...
+[root@mmmde01 logrotate.d]#
 
