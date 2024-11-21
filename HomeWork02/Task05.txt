@@ -2,6 +2,82 @@
 Все события ssh записывать параллельно в отдельный файл, производить ротацию каждые сутки
 или по размеру (не более 1 мегабайта), всего 10 файлов в ротации.
 
+ПЕРВУЮ ЧАСТЬ задания (все события ssh записывать параллельно в отдельный файл) реализовал следующим образом.
+В каталоге /etc/rsyslog.d создал файл sshd.conf, в который записал команду
+if $programname == 'sshd' then /var/log/my_ssh_log.log
+Файл my_ssh_log.log - это отдельный файл, в который будет осуществляться запись сообщений от службы ssh.
+
+[root@mmmde01 etc]# cd rsyslog.d
+[root@mmmde01 rsyslog.d]# ls -all
+total 20
+drwxr-xr-x.   2 root root   58 Sep 21  2022 .
+drwxr-xr-x. 103 root root 8192 Nov 11 17:17 ..
+-rw-r--r--.   1 root root  255 Jun 29  2022 21-cloudinit.conf
+-rw-r--r--.   1 root root  722 Jul 12  2022 iscsid-rsyslog.conf
+[root@mmmde01 rsyslog.d]# nano sshd.conf
+[root@mmmde01 rsyslog.d]# ls -all
+total 24
+drwxr-xr-x.   2 root root   75 Nov 21 16:44 .
+drwxr-xr-x. 103 root root 8192 Nov 11 17:17 ..
+-rw-r--r--.   1 root root  255 Jun 29  2022 21-cloudinit.conf
+-rw-r--r--.   1 root root  722 Jul 12  2022 iscsid-rsyslog.conf
+-rw-r--r--.   1 root root   56 Nov 21 16:44 sshd.conf
+[root@mmmde01 rsyslog.d]# cat sshd.conf
+if $programname == 'sshd' then /var/log/my_ssh_log.log
+
+После перезапуска службы rsyslog отключил соединение к серверу по ssh и затем снова подключился по ssh.
+
+[root@mmmde01 rsyslog.d]# service rsyslog restart
+Redirecting to /bin/systemctl restart rsyslog.service
+[root@mmmde01 rsyslog.d]# exit
+logout
+Connection to 78.140.243.58 closed.
+
+C:\Users\kudrm>ssh root@78.140.243.58
+root@78.140.243.58's password:
+Activate the web console with: systemctl enable --now cockpit.socket
+Last login: Thu Nov 21 16:40:13 2024 from 5.144.116.191
+[root@mmmde01 ~]# cd /var/log
+[root@mmmde01 log]# ls -all
+total 2096
+...
+-rw-------.  1 root   root   183991 Nov 21 16:46 my.log
+-rw-------.  1 root   root      579 Nov 21 16:46 my_ssh_log.log
+...
+
+Указанный отдельный файл после нового подключения по ssh содержал следующую информацию:
+[root@mmmde01 log]# cat my_ssh_log.log
+Nov 21 16:46:25 mmmde01 sshd[1175]: Received disconnect from 5.144.116.191 port 50818:11: disconnected by user
+Nov 21 16:46:25 mmmde01 sshd[1175]: Disconnected from user root 5.144.116.191 port 50818
+Nov 21 16:46:25 mmmde01 sshd[1157]: pam_unix(sshd:session): session closed for user root
+Nov 21 16:46:39 mmmde01 sshd[1230]: Connection reset by 198.235.24.100 port 63630 [preauth]
+Nov 21 16:46:48 mmmde01 sshd[1227]: Accepted password for root from 5.144.116.191 port 50831 ssh2
+Nov 21 16:46:49 mmmde01 sshd[1227]: pam_unix(sshd:session): session opened for user root by (uid=0)
+[root@mmmde01 log]#
+
+
+ВТОРУЮ ЧАСТЬ задания (осуществить по заданным критериям ротацию логов) выполнил следующим образом.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
